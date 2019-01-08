@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOnPath: 1
+  affected: 1
   speed: 0
   path: []
   currentIndex: 0
