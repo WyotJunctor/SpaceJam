@@ -114,7 +114,7 @@ public class Shape : MonoBehaviour {
             isOnPath = false;
             if (affected) {
                 collision.collider.GetComponent<Shape> ().affected = true;
-                GameManager.score += Mathf.RoundToInt (collision.relativeVelocity.sqrMagnitude / 16f);
+                GameManager.score += Mathf.RoundToInt (collision.relativeVelocity.magnitude / 4f);
                 health -= collision.relativeVelocity.magnitude;
 
                 switch (type) {
