@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour {
 
@@ -12,9 +13,9 @@ public class GameManager : MonoBehaviour {
     public static bool simulating = false;
 
     public GameObject splashscreen;
-    public Text message;
-    public Text scoreShow;
-    public Text highScoreText;
+    public TextMeshProUGUI message;
+    public TextMeshProUGUI scoreShow;
+    public TextMeshProUGUI highScoreText;
     public LevelChanger nextLevel;
 
     private void Start () {
