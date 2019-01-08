@@ -8,11 +8,11 @@ public class GameCanvasScript : MonoBehaviour
 
     private void Start() {
         if (instance) {
-            Destroy(this);
+            Destroy(gameObject);
         }
         else {
             instance = this;
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(gameObject);
         }
     }
 }

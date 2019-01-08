@@ -10,14 +10,16 @@ public class GameManager : MonoBehaviour {
 
     public static int score;
 
-    public static bool simulating = true;
+    public static bool simulating = false;
+
+    public List<Collider2D> tools = new List<Collider2D>();
 
     private void Start () {
         if (instance) {
-            Destroy (this);
+            Destroy (gameObject);
         } else {
             instance = this;
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(gameObject);
         }
     }
 
@@ -39,13 +41,14 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator RunLevel(float timeLimit, int threshold) {
 
-        //activate objects
+        foreach (Collider2D collider in tools) {
+            collider.enabled = true;
+        }
         simulating = true;
         score = 0;
 
         yield return new WaitForSeconds(timeLimit);
 
-        //deactivate objects
         simulating = false;
 
         //Fetch old high score
