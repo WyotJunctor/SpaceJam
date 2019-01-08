@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ToolSpawner : MonoBehaviour
 {
     //public Sprite image;
-    public GameObject follower;
+    public Image follower;
     public GameObject tool;
     private ToolPicker toolPicker;
 
@@ -17,8 +17,11 @@ public class ToolSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        follower = transform.GetChild(0).gameObject;
-        follower.SetActive(false);
+        if (transform.childCount > 0) {
+            follower = transform.GetChild(0).GetComponent<Image>();
+            follower.sprite = GetComponent<Image>().sprite;
+            follower.enabled = false;
+        }
         toolPicker = GetComponentInParent<ToolPicker>();
         cam = Camera.main;
     }
@@ -26,19 +29,21 @@ public class ToolSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (follow) {
-            follower.transform.position = cam.ScreenToWorldPoint(Input.mousePosition);
+        if (follow && follower) {
+            follower.transform.position = Input.mousePosition;
         }
     }
 
     public void Select() {
         toolPicker.Select(this);
         follow = true;
-        follower.SetActive(true);
+        if (follower)
+            follower.enabled = true;
     }
 
     public void Deselect() {
-        follower.SetActive(false);
         follow = false;
+        if (follower)
+            follower.enabled = false;
     }
 }
