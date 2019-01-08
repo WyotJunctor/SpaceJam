@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class SplashScreen : MonoBehaviour {
 
@@ -53,6 +54,10 @@ public class SplashScreen : MonoBehaviour {
         highScoreText.text = "Old High Score : " + oldHighScore;
         splashScreen.SetActive(true);
         nextLevel.gameObject.SetActive(success);
+    }
+
+    public void Retry() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void Quit() {
