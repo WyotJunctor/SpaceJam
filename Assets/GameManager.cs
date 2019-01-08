@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 
     public static ToolSpawner currentTool;
 
-    private void Update() {
+    private void Update () {
 
     }
 
