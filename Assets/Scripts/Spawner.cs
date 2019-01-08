@@ -7,6 +7,7 @@ public class Spawner : MonoBehaviour {
 
     public GameObject[] shapes;
     public float speed = 1f;
+    public float spawnsPerSecond = 1f;
 
     public Transform start;
     public Transform mid;
@@ -21,7 +22,7 @@ public class Spawner : MonoBehaviour {
         //if (!Application.isEditor) {
         spawnNumber = 0;
             UpdatePath ();
-            InvokeRepeating ("Spawn", 0f, 1f);
+            InvokeRepeating ("Spawn", 0f, 1 / spawnsPerSecond);
         //}
     }
 

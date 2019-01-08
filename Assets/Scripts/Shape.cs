@@ -31,6 +31,7 @@ public class Shape : MonoBehaviour {
     public void SetPath (Vector3[] _path) {
         //print ("Path length: " + _path.Length);
         path = _path;
+        transform.up = (path[1] - path[0]).normalized;
         lastIndex = path.Length - 1;
     }
 
@@ -43,7 +44,7 @@ public class Shape : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void FixedUpdate () {
         if (isOnPath && path.Length > 0) {
             float t = 0f;
             if (currentIndex < lastIndex) {
@@ -52,7 +53,7 @@ public class Shape : MonoBehaviour {
 
                 rb.velocity = (target - path[currentIndex - 1]).normalized * speed;
 
-                if ((transform.position - target).magnitude < 2 * speed * Time.deltaTime) {
+                if ((transform.position - target).magnitude < 2 * speed * Time.fixedDeltaTime) {
                     rb.position = target;
                     currentIndex++;
                 }
