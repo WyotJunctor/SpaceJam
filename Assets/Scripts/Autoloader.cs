@@ -5,10 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class Autoloader : MonoBehaviour
 {
+
+    public bool LoadOnStart;
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(LoadOnStart) {
+            LoadLevel();
+        }
     }
 
     // Update is called once per frame
