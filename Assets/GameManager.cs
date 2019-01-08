@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour {
     public List<Collider2D> tools = new List<Collider2D>();
 
     private void Start () {
+        score = 0;
+
         if (instance) {
             Destroy (gameObject);
         } else {
