@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour {
         yield return new WaitForSeconds(timeLimit);
 
         simulating = false;
+        tools = new List<Collider2D>();
 
         //Fetch old high score
         int highscore = 0;
