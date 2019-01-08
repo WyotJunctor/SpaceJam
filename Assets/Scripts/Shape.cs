@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ShapeType { square, rectangle, circle, triangle, hexagon, }
+
 [RequireComponent(typeof(Rigidbody2D))]
 public class Shape : MonoBehaviour {
+
+    public ShapeType type;
 
     public bool isOnPath;
     public bool affected;
@@ -17,6 +21,10 @@ public class Shape : MonoBehaviour {
     public Vector3 target;
 
     private Vector3 dampVel;
+
+    public Transform subcomponent;
+
+    public float health = 30f;
 
     Rigidbody2D rb;
 
@@ -43,7 +51,7 @@ public class Shape : MonoBehaviour {
 
                 rb.velocity = (target - path[currentIndex - 1]).normalized * speed;
 
-                if ((transform.position - target).sqrMagnitude < 0.01f) {
+                if ((transform.position - target).sqrMagnitude < 0.05f) {
                     currentIndex++;
                     //print ("Next index!");
                 }
@@ -51,16 +59,97 @@ public class Shape : MonoBehaviour {
                 Destroy (gameObject);
             }
         }
+
+        if (transform.position.magnitude > 20 || health < 0f) {
+            Destroy (gameObject);
+        }
+    }
+
+    IEnumerator IncreaseAngularVelocity () {
+        if (!affected) {
+            float direction = Mathf.Sign (rb.angularVelocity);
+            while (true) {
+                rb.angularVelocity += direction * 30f * Time.deltaTime;
+                yield return new WaitForEndOfFrame ();
+            }
+        }
+    }
+
+    IEnumerator IncreaseScale () {
+        if (!affected) {
+            while (transform.localScale.x < 3f) {
+                transform.localScale += Vector3.one * 0.5f * Time.deltaTime;
+                yield return new WaitForEndOfFrame ();
+            }
+        }
+    }
+
+    IEnumerator IncreaseVelocity () {
+        if (!affected) {
+            Vector2 direction = rb.velocity.normalized;
+            while (true) {
+                rb.velocity += direction * Time.deltaTime;
+                yield return new WaitForEndOfFrame ();
+            }
+        }
+    }
+
+    void BreakIntoSubcomponents () {
+        //if (affected)
+            //return;
+
+        if (transform.childCount == 0)
+            return;
+
+        subcomponent.SetParent (null);
+        subcomponent.gameObject.SetActive (true);
+
+        Destroy (gameObject);
     }
 
     private void OnCollisionEnter2D (Collision2D collision) {
         if (collision.collider.CompareTag ("Shape")) {
             isOnPath = false;
             if (affected) {
-                print ("Gimme money");
                 collision.collider.GetComponent<Shape> ().affected = true;
-                GameManager.score += Mathf.RoundToInt (collision.relativeVelocity.sqrMagnitude / 10f);
+                GameManager.score += Mathf.RoundToInt (collision.relativeVelocity.sqrMagnitude / 16f);
+                health -= collision.relativeVelocity.sqrMagnitude;
+
+                switch (type) {
+                    case ShapeType.square:
+                        float x = rb.velocity.x;
+                        float y = rb.velocity.y;
+
+                        Vector2 targetVel;
+                        if (Mathf.Abs (x) > Mathf.Abs (y)) {
+                            targetVel = new Vector2 (x, 0f).normalized * 5f;
+                        } else {
+                            targetVel = new Vector2 (0f, y).normalized * 5f;
+                        }
+
+                        rb.velocity = targetVel; 
+                        break;
+
+                    case ShapeType.rectangle:
+                        StartCoroutine (IncreaseAngularVelocity ());
+                        break;
+                    case ShapeType.circle:
+                        StartCoroutine (IncreaseScale ());
+                        break;
+                    case ShapeType.triangle:
+                        StartCoroutine (IncreaseVelocity ());
+                        break;
+                    case ShapeType.hexagon:
+                        BreakIntoSubcomponents ();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
+    }
+
+    private void OnTriggerEnter2D (Collider2D collision) {
+        isOnPath = false;
     }
 }
