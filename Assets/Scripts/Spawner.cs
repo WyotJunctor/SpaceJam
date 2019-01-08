@@ -33,7 +33,7 @@ public class Spawner : MonoBehaviour {
 
     public void UpdatePath () {
         if (start && mid && end) {
-            path = GetPath (start.position, mid.position, end.position, 40);
+            path = GetPath (start.position, mid.position, end.position, 15);
         }
     }
 

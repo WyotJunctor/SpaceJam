@@ -45,15 +45,16 @@ public class Shape : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         if (isOnPath && path.Length > 0) {
+            float t = 0f;
             if (currentIndex < lastIndex) {
                 target = path[currentIndex];
                 transform.up = Vector3.SmoothDamp (transform.up, (target - transform.position).normalized, ref dampVel, 0.3f);
 
                 rb.velocity = (target - path[currentIndex - 1]).normalized * speed;
 
-                if ((transform.position - target).sqrMagnitude < 0.05f) {
+                if ((transform.position - target).magnitude < 2 * speed * Time.deltaTime) {
+                    rb.position = target;
                     currentIndex++;
-                    //print ("Next index!");
                 }
             } else {
                 Destroy (gameObject);
@@ -113,7 +114,7 @@ public class Shape : MonoBehaviour {
             if (affected) {
                 collision.collider.GetComponent<Shape> ().affected = true;
                 GameManager.score += Mathf.RoundToInt (collision.relativeVelocity.sqrMagnitude / 16f);
-                health -= collision.relativeVelocity.sqrMagnitude;
+                health -= collision.relativeVelocity.magnitude;
 
                 switch (type) {
                     case ShapeType.square:
