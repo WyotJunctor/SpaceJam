@@ -6,39 +6,39 @@ using UnityEngine.UI;
 public class ToolSpawner : MonoBehaviour
 {
     //public Sprite image;
-    private Image mouseFollow;
+    public GameObject follower;
     public GameObject tool;
     private ToolPicker toolPicker;
 
     private bool follow = false;
+    Camera cam;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        mouseFollow = transform.GetChild(0).GetComponent<Image>();
-        mouseFollow.sprite = GetComponent<Image>().sprite;
-        mouseFollow.enabled = false;
+        follower = transform.GetChild(0).gameObject;
+        follower.SetActive(false);
         toolPicker = GetComponentInParent<ToolPicker>();
+        cam = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
         if (follow) {
-            mouseFollow.transform.position = Input.mousePosition;
+            follower.transform.position = cam.ScreenToWorldPoint(Input.mousePosition);
         }
     }
 
     public void Select() {
         toolPicker.Select(this);
         follow = true;
-        mouseFollow.enabled = true;
-        Debug.Log("Reeee");
+        follower.SetActive(true);
     }
 
     public void Deselect() {
-        mouseFollow.enabled = false;
-        mouseFollow.transform.position = transform.position;
+        follower.SetActive(false);
         follow = false;
     }
 }
