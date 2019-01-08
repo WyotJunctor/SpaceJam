@@ -10,24 +10,21 @@ public class GameManager : MonoBehaviour {
 
     public static int score;
 
-    public static bool simulating = false;
-
-    public GameObject splashscreen;
-    public TextMeshProUGUI message;
-    public TextMeshProUGUI scoreShow;
-    public TextMeshProUGUI highScoreText;
-    public LevelChanger nextLevel;
+    public static bool simulating = true;
 
     private void Start () {
         if (instance) {
             Destroy (this);
         } else {
             instance = this;
+            DontDestroyOnLoad(this);
         }
     }
 
     private void Update () {
-
+        if (Input.GetKeyDown(KeyCode.P) && simulating) {
+            SplashScreen.instance.Pause();
+        }
     }
 
     public static void AddToScore (int addition) {
@@ -68,15 +65,7 @@ public class GameManager : MonoBehaviour {
 
         PlayerPrefs.Save();
 
-        SplashScreen(score, threshold, highscore);
-    }
-
-    void SplashScreen(int score, int threshold, int oldHighScore) {
-        bool success = score >= threshold;
-        message.text = success ? "You win!" : "Not Quite There!";
-        scoreShow.text = score + " / " + threshold;
-        highScoreText.text = "Old High Score : " + oldHighScore;
-        splashscreen.SetActive(true);
-        nextLevel.gameObject.SetActive(success);
+        Time.timeScale = 0f;
+        SplashScreen.instance.Splash(score, threshold, highscore);
     }
 }
