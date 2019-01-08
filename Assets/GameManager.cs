@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour {
     public GameObject splashscreen;
     public Text message;
     public Text scoreShow;
+    public Text highScoreText;
     public LevelChanger nextLevel;
 
     private void Start () {
@@ -48,13 +49,32 @@ public class GameManager : MonoBehaviour {
 
         //deactivate objects
         simulating = false;
-        SplashScreen(score, threshold);
+
+        //Fetch old high score
+        int highscore = 0;
+        if(PlayerPrefs.HasKey("level")) {
+            int level = PlayerPrefs.GetInt("level");
+            if(PlayerPrefs.HasKey("score" + level)) {
+                highscore = PlayerPrefs.GetInt("score" + level);
+            }
+            if(score > highscore) {
+                PlayerPrefs.SetInt("score" + level, score);
+            }
+        } else {
+            PlayerPrefs.SetInt("level", 1);
+            PlayerPrefs.SetInt("score1", score);
+        }
+
+        PlayerPrefs.Save();
+
+        SplashScreen(score, threshold, highscore);
     }
 
-    void SplashScreen(int score, int threshold) {
+    void SplashScreen(int score, int threshold, int oldHighScore) {
         bool success = score >= threshold;
         message.text = success ? "You win!" : "Not Quite There!";
         scoreShow.text = score + " / " + threshold;
+        highScoreText.text = "Old High Score : " + oldHighScore;
         splashscreen.SetActive(true);
         nextLevel.gameObject.SetActive(success);
     }
