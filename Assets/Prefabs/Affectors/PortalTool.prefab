@@ -459,7 +459,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pair: {fileID: 0}
   teleportCD: 0
-  maxTeleportCD: 0.01
+  maxTeleportCD: 0.1
 --- !u!1 &6928140313276087416
 GameObject:
   m_ObjectHideFlags: 0

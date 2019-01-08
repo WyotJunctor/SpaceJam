@@ -9,7 +9,7 @@ public class Portal : MonoBehaviour {
     public Portal pair;
 
     public float teleportCD = 0f;
-    public float maxTeleportCD = 0.01f;
+    public float maxTeleportCD = 0.1f;
 
     // Start is called before the first frame update
     void Start () {
