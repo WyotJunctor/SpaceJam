@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public static void SimulateLevel(float forTime, int threshold) {
-        if(simulating) {
+        if(!simulating) {
             instance.StartCoroutine(instance.RunLevel(forTime, threshold));
         }
     }
