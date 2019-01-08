@@ -17,8 +17,8 @@ public class RunButton : MonoBehaviour, IPointerClickHandler
     void Start()
     {
         text = GetComponent<TextMeshProUGUI>();
-        time = 30;
-        score = 100;
+        time = 15;
+        score = 200;
     }
 
     // Update is called once per frame
