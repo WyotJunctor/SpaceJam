@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
 
     private void Start () {
         score = 0;
+        MapArea.current = 0;
 
         if (instance) {
             Destroy (gameObject);
@@ -73,5 +74,11 @@ public class GameManager : MonoBehaviour {
 
         Time.timeScale = 0f;
         SplashScreen.instance.Splash(score, threshold, highscore);
+    }
+
+    public void Restart() {
+        simulating = false;
+        StopAllCoroutines();
+        tools = new List<Collider2D>();
     }
 }

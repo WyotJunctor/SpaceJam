@@ -58,6 +58,7 @@ public class SplashScreen : MonoBehaviour {
 
     public void Retry() {
         Time.timeScale = 1f;
+        GameManager.instance.Restart();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
