@@ -18,7 +18,15 @@ public class Autoloader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetAxis("Submit") > 0) {
+            LoadLevel();
+        }
+        else if (Input.GetKeyDown(KeyCode.R)) {
+            {
+                PlayerPrefs.SetInt("level", 1);
+                PlayerPrefs.Save();
+            }
+        }
     }
 
     public void LoadLevel() {
